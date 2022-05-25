@@ -58,10 +58,10 @@ export class CachingService {
     return await this.asyncExpire(key, ttl);
   }
 
-  public async setCacheRemote<T>(key: string, value: T, ttl: number = this.configService.getCacheTtl()): Promise<T> {
+  public async setCacheRemote<T>(key: string, value: T, ttl: number = this.getCacheTtl()): Promise<T> {
     const profiler = new PerformanceProfiler();
     try {
-      await this.asyncSet(key, JSON.stringify(value), 'EX', ttl ?? this.configService.getCacheTtl());
+      await this.asyncSet(key, JSON.stringify(value), 'EX', ttl ?? this.getCacheTtl());
     } finally {
       profiler.stop();
       this.metricsService.setRedisDuration('SET', profiler.duration);
@@ -107,7 +107,7 @@ export class CachingService {
     return JSON.parse(response);
   }
 
-  async setCacheLocal<T>(key: string, value: T, ttl: number = this.configService.getCacheTtl()): Promise<T> {
+  async setCacheLocal<T>(key: string, value: T, ttl: number = this.getCacheTtl()): Promise<T> {
     return await this.localCacheService.setCacheValue<T>(key, value, ttl);
   }
 
@@ -115,7 +115,7 @@ export class CachingService {
     return await this.localCacheService.getCacheValue<T>(key);
   }
 
-  async refreshCacheLocal<T>(key: string, ttl: number = this.configService.getCacheTtl()): Promise<T | undefined> {
+  async refreshCacheLocal<T>(key: string, ttl: number = this.getCacheTtl()): Promise<T | undefined> {
     const value = await this.getCacheRemote<T>(key);
     if (value) {
       await this.setCacheLocal<T>(key, value, ttl);
@@ -136,13 +136,13 @@ export class CachingService {
     return await this.getCacheRemote<T>(key);
   }
 
-  public async setCache<T>(key: string, value: T, ttl: number = this.configService.getCacheTtl()): Promise<T> {
+  public async setCache<T>(key: string, value: T, ttl: number = this.getCacheTtl()): Promise<T> {
     await this.setCacheLocal<T>(key, value, ttl);
     await this.setCacheRemote<T>(key, value, ttl);
     return value;
   }
 
-  async batchProcess<IN, OUT>(payload: IN[], cacheKeyFunction: (element: IN) => string, handler: (generator: IN) => Promise<OUT>, ttl: number = this.configService.getCacheTtl(), skipCache: boolean = false): Promise<OUT[]> {
+  async batchProcess<IN, OUT>(payload: IN[], cacheKeyFunction: (element: IN) => string, handler: (generator: IN) => Promise<OUT>, ttl: number = this.getCacheTtl(), skipCache: boolean = false): Promise<OUT[]> {
     const result: OUT[] = [];
 
     const chunks = BatchUtils.splitArrayIntoChunks(payload, 100);
@@ -170,7 +170,7 @@ export class CachingService {
     return result;
   }
 
-  async batchProcessChunk<IN, OUT>(payload: IN[], cacheKeyFunction: (element: IN) => string, handler: (generator: IN) => Promise<OUT>, ttl: number = this.configService.getCacheTtl(), skipCache: boolean = false): Promise<OUT[]> {
+  async batchProcessChunk<IN, OUT>(payload: IN[], cacheKeyFunction: (element: IN) => string, handler: (generator: IN) => Promise<OUT>, ttl: number = this.getCacheTtl(), skipCache: boolean = false): Promise<OUT[]> {
     const keys = payload.map(element => cacheKeyFunction(element));
 
     let cached: OUT[] = [];
@@ -224,7 +224,7 @@ export class CachingService {
 
   async batchSetCache(keys: string[], values: any[], ttls: number[], setLocalCache: boolean = true, spreadTtl: boolean = true) {
     if (!ttls) {
-      ttls = new Array(keys.length).fill(this.configService.getCacheTtl());
+      ttls = new Array(keys.length).fill(this.getCacheTtl());
     }
 
     if (spreadTtl) {
@@ -431,7 +431,7 @@ export class CachingService {
     );
   }
 
-  async getOrSetCache<T>(key: string, promise: () => Promise<T>, remoteTtl: number = this.configService.getCacheTtl(), localTtl: number | undefined = undefined, forceRefresh: boolean = false): Promise<T> {
+  async getOrSetCache<T>(key: string, promise: () => Promise<T>, remoteTtl: number = this.getCacheTtl(), localTtl: number | undefined = undefined, forceRefresh: boolean = false): Promise<T> {
     if (!localTtl) {
       localTtl = remoteTtl / 2;
     }
@@ -509,5 +509,9 @@ export class CachingService {
 
   async flushDb(): Promise<any> {
     await this.asyncFlushDb();
+  }
+
+  private getCacheTtl(): number {
+    return 6;
   }
 }

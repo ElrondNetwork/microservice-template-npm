@@ -13,6 +13,7 @@
     "**/coverage": true,
     "**/dist": true,
     "**/config/config.yaml": true,
+    "**/lib": true,
   },
   "search.exclude": {
     "**/node_modules": true,
