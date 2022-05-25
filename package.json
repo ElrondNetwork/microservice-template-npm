@@ -49,13 +49,17 @@
     "@elrondnetwork/native-auth": "^0.1.20",
     "@nestjs/config": "^2.0.1",
     "@types/redis": "^2.8.32",
+    "agentkeepalive": "^4.2.1",
     "axios": "^0.27.2",
     "bech32": "^2.0.0",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
+    "nest-winston": "^1.6.2",
     "prom-client": "^14.0.1",
     "redis": "^3.1.2",
-    "tiny-async-pool": "^1.2.0"
+    "tiny-async-pool": "^1.2.0",
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1"
   },
   "peerDependencies": {
     "@nestjs/common": "^8.4.5",
