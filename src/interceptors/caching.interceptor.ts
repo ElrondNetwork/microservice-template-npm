@@ -6,7 +6,7 @@ import { MetricsService } from "src/common/metrics/metrics.service";
 import { CachingService } from "src/common/caching/caching.service";
 import { NoCacheOptions } from "src/decorators/no.cache";
 import { DecoratorUtils } from "src/utils/decorator.utils";
-import { Constants } from "src/utils/constants";
+import { Constants } from "../utils/constants";
 
 @Injectable()
 export class CachingInterceptor implements NestInterceptor {

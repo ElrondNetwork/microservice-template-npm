@@ -1,8 +1,8 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { ApiService } from "../api/api.service";
-import { PerformanceProfiler } from "src/utils/performance.profiler";
+import { PerformanceProfiler } from "../../utils/performance.profiler";
 import { MetricsService } from "src/common/metrics/metrics.service";
-import { ApiConfigService } from "../api-config/api.config.service";
+import { NestjsApiConfigService } from "../api-config/nestjs.api.config.service";
 import { ElasticQuery } from "./entities/elastic.query";
 import { ElasticMetricType } from "../metrics/entities/elastic.metric.type";
 
@@ -11,7 +11,7 @@ export class ElasticService {
   private readonly url: string;
 
   constructor(
-    private apiConfigService: ApiConfigService,
+    private apiConfigService: NestjsApiConfigService,
     @Inject(forwardRef(() => ApiService))
     private readonly apiService: ApiService,
     @Inject(forwardRef(() => MetricsService))

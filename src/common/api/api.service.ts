@@ -2,8 +2,8 @@ import { forwardRef, Inject, Injectable, Logger } from "@nestjs/common";
 import axios, { AxiosRequestConfig } from "axios";
 import Agent from 'agentkeepalive';
 import { MetricsService } from "src/common/metrics/metrics.service";
-import { ApiConfigService } from "../api-config/api.config.service";
-import { PerformanceProfiler } from "src/utils/performance.profiler";
+import { NestjsApiConfigService } from "../api-config/nestjs.api.config.service";
+import { PerformanceProfiler } from "../../utils/performance.profiler";
 import { ApiSettings } from "./entities/api.settings";
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ApiService {
   private keepaliveAgent: Agent | undefined | null = null;
 
   constructor(
-    private readonly apiConfigService: ApiConfigService,
+    private readonly apiConfigService: NestjsApiConfigService,
     @Inject(forwardRef(() => MetricsService))
     private readonly metricsService: MetricsService,
   ) { }

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PerformanceProfiler } from "src/utils/performance.profiler";
+import { PerformanceProfiler } from "../../utils/performance.profiler";
 import { LocalCacheValue } from "./entities/local.cache.value";
 
 @Injectable()

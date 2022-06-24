@@ -1,7 +1,7 @@
 import { Global, Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import configuration from "config/configuration";
-import { ApiConfigService } from "./api.config.service";
+import configuration from "../../../config/configuration";
+import { NestjsApiConfigService } from "./nestjs.api.config.service";
 
 @Global()
 @Module({
@@ -11,10 +11,10 @@ import { ApiConfigService } from "./api.config.service";
     }),
   ],
   providers: [
-    ApiConfigService,
+    NestjsApiConfigService,
   ],
   exports: [
-    ApiConfigService,
+    NestjsApiConfigService,
   ],
 })
-export class ApiConfigModule { }
+export class NestjsApiConfigModule { }

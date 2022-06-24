@@ -1,12 +1,12 @@
 import { forwardRef, Inject, Injectable, Logger } from "@nestjs/common";
-import { ApiConfigService } from "../api-config/api.config.service";
+import { NestjsApiConfigService } from "../api-config/nestjs.api.config.service";
 const { promisify } = require('util');
 import { createClient } from 'redis';
 import asyncPool from 'tiny-async-pool';
 import { PerformanceProfiler } from "../../utils/performance.profiler";
 import { LocalCacheService } from "./local.cache.service";
 import { MetricsService } from "../metrics/metrics.service";
-import { BatchUtils } from "src/utils/batch.utils";
+import { BatchUtils } from "../../utils/batch.utils";
 
 @Injectable()
 export class CachingService {
@@ -30,7 +30,7 @@ export class CachingService {
   private readonly logger: Logger;
 
   constructor(
-    private readonly configService: ApiConfigService,
+    private readonly configService: NestjsApiConfigService,
     private readonly localCacheService: LocalCacheService,
     @Inject(forwardRef(() => MetricsService))
     private readonly metricsService: MetricsService,

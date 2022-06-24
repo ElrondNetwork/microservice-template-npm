@@ -1,4 +1,4 @@
-import { Constants } from "src/utils/constants";
+import { Constants } from "../../../utils/constants";
 
 export class CacheInfo {
   key: string = "";

@@ -1,5 +1,5 @@
 import { Logger } from "@nestjs/common";
-import { MetricsService } from "src/common/metrics/metrics.service";
+import { MetricsService } from "../common/metrics/metrics.service";
 import { PerformanceProfiler } from "./performance.profiler";
 
 export class Locker {

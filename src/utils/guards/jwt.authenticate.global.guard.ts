@@ -1,15 +1,13 @@
-import { Injectable, CanActivate, ExecutionContext, Logger } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, Logger } from "@nestjs/common";
 import { TokenExpiredError, verify } from 'jsonwebtoken';
-import { NestjsApiConfigService } from '../../common/api-config/nestjs.api.config.service';
+import configuration from "../../../config/configuration";
 
 @Injectable()
-export class JwtAuthenticateGuard implements CanActivate {
+export class JwtAuthenticateGlobalGuard implements CanActivate {
   private readonly logger: Logger;
 
-  constructor(
-    private readonly apiConfigService: NestjsApiConfigService
-  ) {
-    this.logger = new Logger(JwtAuthenticateGuard.name);
+  constructor() {
+    this.logger = new Logger(JwtAuthenticateGlobalGuard.name);
   }
 
   async canActivate(
@@ -25,19 +23,22 @@ export class JwtAuthenticateGuard implements CanActivate {
     const jwt = authorization.replace('Bearer ', '');
 
     try {
-      const jwtSecret = this.apiConfigService.getJwtSecret();
+      const jwtSecret: string = configuration()['security.jwtSecret'];
 
-      request.jwt = await new Promise((resolve, reject) => {
-        verify(jwt, jwtSecret, (err: any, decoded: any) => {
+      const accessAddress = await new Promise((resolve, reject) => {
+        verify(jwt, jwtSecret, (err, decoded) => {
           if (err) {
             reject(err);
           }
 
           // @ts-ignore
-          resolve(decoded.user);
+          resolve(decoded.accessAddress);
         });
       });
 
+      if (accessAddress !== configuration()['security.accessAddress']) {
+        return false;
+      }
     } catch (error) {
       if (error instanceof TokenExpiredError) {
         return false;

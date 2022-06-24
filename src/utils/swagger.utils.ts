@@ -1,5 +1,5 @@
 import { ApiPropertyOptions } from "@nestjs/swagger";
-import { Amount } from "src/common/entities/amount";
+import { Amount } from "../common/entities/amount";
 
 export class SwaggerUtils {
   static amountPropertyOptions(extraOptions?: ApiPropertyOptions): ApiPropertyOptions {

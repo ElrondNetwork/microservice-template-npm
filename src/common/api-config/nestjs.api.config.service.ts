@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class ApiConfigService {
+export class NestjsApiConfigService {
   constructor(private readonly configService: ConfigService) { }
 
   getConfig<T>(configKey: string): T | undefined {
@@ -81,5 +81,9 @@ export class ApiConfigService {
     }
 
     return jwtSecret;
+  }
+
+  getAccessAddress(): string {
+    return this.configService.get<string>('security.accessAddress') ?? '';
   }
 }

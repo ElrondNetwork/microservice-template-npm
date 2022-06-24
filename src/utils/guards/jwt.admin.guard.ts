@@ -1,10 +1,10 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { ApiConfigService } from 'src/common/api-config/api.config.service';
+import { NestjsApiConfigService } from '../../common/api-config/nestjs.api.config.service';
 
 @Injectable()
 export class JwtAdminGuard implements CanActivate {
   constructor(
-    private readonly apiConfigService: ApiConfigService
+    private readonly apiConfigService: NestjsApiConfigService
   ) { }
 
   // eslint-disable-next-line require-await
